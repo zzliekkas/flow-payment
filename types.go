@@ -4,7 +4,8 @@ import (
 	"net/http"
 )
 
-// 支付请求参数
+// PaymentParams 支付请求参数
+// Deprecated: 请使用 PaymentRequest
 type PaymentParams struct {
 	Amount      int64  // 金额，单位分
 	Currency    string // 货币类型，如CNY、USD
@@ -15,7 +16,8 @@ type PaymentParams struct {
 	// 可扩展更多字段
 }
 
-// 支付结果
+// PaymentResult 支付结果
+// Deprecated: 请使用 PaymentResponse
 type PaymentResult struct {
 	Provider      string      // 支付渠道
 	PaymentURL    string      // 跳转支付页面的URL（如有）
@@ -23,7 +25,8 @@ type PaymentResult struct {
 	Raw           interface{} // 原始返回数据
 }
 
-// 回调处理结果
+// CallbackResult 回调处理结果
+// Deprecated: 请使用 PaymentResponse 配合 HandleNotify
 type CallbackResult struct {
 	OrderID       string
 	TransactionID string
@@ -32,7 +35,8 @@ type CallbackResult struct {
 	Raw           interface{}
 }
 
-// 订单状态查询结果
+// StatusResult 订单状态查询结果
+// Deprecated: 请使用 PaymentStatus
 type StatusResult struct {
 	OrderID       string
 	TransactionID string
@@ -41,6 +45,7 @@ type StatusResult struct {
 }
 
 // PaymentRequest 支付请求参数
+// 注意: Amount 为 float64 类型，单位为元。建议在业务层使用整数（分）进行计算，仅在调用支付接口时转换。
 type PaymentRequest struct {
 	Amount   float64           `json:"amount"`
 	Currency string            `json:"currency"`

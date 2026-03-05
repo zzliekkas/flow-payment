@@ -23,11 +23,10 @@ func (m *PaymentManager) Register(provider PaymentProvider) {
 	m.providers[provider.Name()] = provider
 }
 
-// 获取支付渠道
+// Get 获取支付渠道
+// Deprecated: 请使用 GetProvider
 func (m *PaymentManager) Get(name string) PaymentProvider {
-	m.mu.RLock()
-	defer m.mu.RUnlock()
-	return m.providers[name]
+	return m.GetProvider(name)
 }
 
 // GetProvider 获取支付提供者

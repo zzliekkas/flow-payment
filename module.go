@@ -1,14 +1,33 @@
-package flowintegration
+package payment
 
 import (
 	"net/http"
 
-	payment "github.com/zzliekkas/flow-payment"
 	"github.com/zzliekkas/flow/v2"
 )
 
-// RegisterFlowRoutes registers payment routes on a Flow engine.
-func RegisterFlowRoutes(e *flow.Engine, manager *payment.PaymentManager) {
+// PaymentModule implements flow.RoutableModule for easy registration into a Flow engine.
+type PaymentModule struct {
+	manager *PaymentManager
+}
+
+// NewModule creates a new PaymentModule with the given PaymentManager.
+func NewModule(manager *PaymentManager) *PaymentModule {
+	return &PaymentModule{manager: manager}
+}
+
+// Name returns the module name.
+func (m *PaymentModule) Name() string {
+	return "payment"
+}
+
+// Init registers payment services into Flow's DI container.
+func (m *PaymentModule) Init(e *flow.Engine) error {
+	return e.Provide(func() *PaymentManager { return m.manager })
+}
+
+// RegisterRoutes registers payment HTTP routes on the Flow engine.
+func (m *PaymentModule) RegisterRoutes(e *flow.Engine) {
 	paymentGroup := e.Group("/payment")
 	{
 		paymentGroup.POST("/create", func(c *flow.Context) {
@@ -24,13 +43,13 @@ func RegisterFlowRoutes(e *flow.Engine, manager *payment.PaymentManager) {
 				return
 			}
 
-			provider := manager.GetProvider(req.Provider)
+			provider := m.manager.GetProvider(req.Provider)
 			if provider == nil {
 				c.JSON(http.StatusBadRequest, flow.H{"error": "不支持的支付提供者"})
 				return
 			}
 
-			result, err := provider.CreatePayment(&payment.PaymentRequest{
+			result, err := provider.CreatePayment(&PaymentRequest{
 				Amount:   req.Amount,
 				Currency: req.Currency,
 				OrderID:  req.OrderID,
@@ -47,7 +66,7 @@ func RegisterFlowRoutes(e *flow.Engine, manager *payment.PaymentManager) {
 			providerName := c.Param("provider")
 			orderID := c.Param("order_id")
 
-			provider := manager.GetProvider(providerName)
+			provider := m.manager.GetProvider(providerName)
 			if provider == nil {
 				c.JSON(http.StatusBadRequest, flow.H{"error": "不支持的支付提供者"})
 				return
@@ -65,7 +84,7 @@ func RegisterFlowRoutes(e *flow.Engine, manager *payment.PaymentManager) {
 		paymentGroup.POST("/notify/:provider", func(c *flow.Context) {
 			providerName := c.Param("provider")
 
-			provider := manager.GetProvider(providerName)
+			provider := m.manager.GetProvider(providerName)
 			if provider == nil {
 				c.JSON(http.StatusBadRequest, flow.H{"error": "不支持的支付提供者"})
 				return
@@ -92,13 +111,13 @@ func RegisterFlowRoutes(e *flow.Engine, manager *payment.PaymentManager) {
 				return
 			}
 
-			provider := manager.GetProvider(req.Provider)
+			provider := m.manager.GetProvider(req.Provider)
 			if provider == nil {
 				c.JSON(http.StatusBadRequest, flow.H{"error": "不支持的支付提供者"})
 				return
 			}
 
-			result, err := provider.Refund(&payment.RefundRequest{
+			result, err := provider.Refund(&RefundRequest{
 				OrderID: req.OrderID,
 				Amount:  req.Amount,
 				Reason:  req.Reason,
