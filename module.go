@@ -3,7 +3,7 @@ package payment
 import (
 	"net/http"
 
-	"github.com/zzliekkas/flow/v2"
+	"github.com/zzliekkas/flow/v3"
 )
 
 // PaymentModule implements flow.RoutableModule for easy registration into a Flow engine.

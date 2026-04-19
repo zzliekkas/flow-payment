@@ -9,7 +9,7 @@ require (
 	github.com/smartwalle/alipay/v3 v3.2.20
 	github.com/stripe/stripe-go/v74 v74.30.0
 	github.com/wechatpay-apiv3/wechatpay-go v0.2.20
-	github.com/zzliekkas/flow/v2 v2.0.0
+	github.com/zzliekkas/flow/v3 v3.0.0
 )
 
 require (
