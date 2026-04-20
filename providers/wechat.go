@@ -15,7 +15,7 @@ import (
 	notify "github.com/wechatpay-apiv3/wechatpay-go/core/notify"
 	jsapi "github.com/wechatpay-apiv3/wechatpay-go/services/payments/jsapi"
 	"github.com/wechatpay-apiv3/wechatpay-go/services/refunddomestic"
-	"github.com/zzliekkas/flow-payment"
+	"github.com/zzliekkas/flow-payment/v3"
 )
 
 // WechatPayProvider 微信支付提供者

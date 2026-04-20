@@ -1,4 +1,4 @@
-module github.com/zzliekkas/flow-payment
+module github.com/zzliekkas/flow-payment/v3
 
 go 1.23.0
 

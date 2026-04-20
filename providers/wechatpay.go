@@ -3,7 +3,7 @@ package providers
 import (
 	"context"
 
-	"github.com/zzliekkas/flow-payment"
+	"github.com/zzliekkas/flow-payment/v3"
 )
 
 type WeChatPayProvider struct {

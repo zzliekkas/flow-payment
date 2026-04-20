@@ -14,7 +14,7 @@ import (
 	"github.com/stripe/stripe-go/v74/refund"
 	"github.com/stripe/stripe-go/v74/webhook"
 
-	"github.com/zzliekkas/flow-payment"
+	"github.com/zzliekkas/flow-payment/v3"
 )
 
 // StripeProvider Stripe支付提供者
